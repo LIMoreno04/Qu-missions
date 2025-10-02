@@ -1,8 +1,10 @@
-# Qu-missions
+# Qu-missions  |  Team 3
 
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+### Quantum Hackathon Latam 2025: *Quantum for Climate*
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Qiskit](https://img.shields.io/badge/Qiskit-%236929C4.svg?style=for-the-badge&logo=Qiskit&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
 > Ensuring fair-play and transparency in climate impact reporting with quantum communication.
 
@@ -12,11 +14,13 @@
 
 These instruments depend on the transparency and accuracy of the measurements. Weak points in reporting not only erode trust but also open the door for manipulation: bad actors could exploit loopholes, alter data, or under-report emissions[^2]. Assuring the integrity of both the measurements and their transmission is therefore critical for a level playing field where incentives for reducing emissions truly drive meaningful climate impact. 
 
-**Technical solution:** We propose an end-to-end quantum-enabled system for trustworthy climate reporting, combining three complementary components:
+**Technical Solution:** We propose an end-to-end quantum-enabled system for trustworthy climate reporting, combining three complementary components:
 
 1. *Quantum Key Distribution* — secures data in transit, validating unmediated provenance and detecting interception attempts.
 2. *Quantum Digital Signatures* — coupled with QKD, provides non-repudiation and source identification, preventing disputes about the report’s origin.
 3. *Physical Quantum Seals* — protects the measurement infrastructure, ensuring sensors and devices cannot be tampered with or manipulated.
+
+**Need for Quantum:** Conventional digital security methods cannot fully guarantee the integrity and authenticity of climate impact data, especially when both the physical measurement and its transmission are at risk. Classical encryption can be broken, sensor tampering can go undetected, and digital signatures alone cannot prevent sophisticated forgery. *QKD* & *QDS* components provide unforgeable and non-repudiable authentication, whereas *quantum seals* safeguard the physical measurement devices themselves. Together, these technologies provide an end-to-end, information-theoretically secure framework, making it possible to trust climate impact reports in a superior way to classical methods.
 
 **Scale & Feasibility:** Foundational theory on quantum signatures have outlined an approach to quantum-enabled authentication[^3].  Identity-based quantum protocols have been demonstrated in the context of a secure QKD communication[^4] and a 280-km signature has been achieved[^5]. As well, advancements in practical QKD have been shown, like a satellite-to-ground linkage[^6], showcasing practical viability. In addition, schematic quantum seals using entangled photon sources have been proposed[^7].
 
