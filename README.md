@@ -1,5 +1,7 @@
 # Qu-missions  |  Team 3
 
+![Logo](logoQuantum.svg)
+
 ### Quantum Hackathon Latam 2025: *Quantum for Climate*
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
