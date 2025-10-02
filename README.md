@@ -33,7 +33,7 @@ These instruments depend on the transparency and accuracy of the measurements. W
 
 In this repository, you can find:
 
-- **mathematical-formalism.pdf** A document where we outline how to integrate QKD & QDS.
+- **math-description.pdf** A document where we outline how to integrate QKD & QDS.
 - **front-end-dashboard** A mock visualization dashboard.
 
 ## Bibliography
