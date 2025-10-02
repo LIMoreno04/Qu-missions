@@ -10,7 +10,7 @@
 
 **Context:** Trillions of dollars are being mobilized through green economic mechanisms like carbon trading markets and sustainability loans[^1]. Uruguay itself pioneered a world-first [sovereign sustainability-linked bond](https://www.mef.gub.uy/30687/20/areas/uruguays-sovereign-sustainability-linked-bond-sslb.html), tying the country’s debt interest rates directly to verified emissions performance. Transparent metric validation can boost investor trust, open science and policy impact, all essential for comprehensive and effective climate action. 
 
-These instruments only function if the underlying measurements are accurate and transparent. At the same time, weak points in reporting open the door for manipulation: bad actors could exploit loopholes, alter data, or under-report emissions[^2]. Assuring the integrity of both the measurements and their transmission is therefore critical. 
+These instruments depend on the transparency and accuracy of the measurements. Weak points in reporting not only erode trust but also open the door for manipulation: bad actors could exploit loopholes, alter data, or under-report emissions[^2]. Assuring the integrity of both the measurements and their transmission is therefore critical for a level playing field where incentives for reducing emissions truly drive meaningful climate impact. 
 
 **Technical solution:** We propose an end-to-end quantum-enabled system for trustworthy climate reporting, combining three complementary components:
 
@@ -18,7 +18,7 @@ These instruments only function if the underlying measurements are accurate and 
 2. *Quantum Digital Signatures* — coupled with QKD, provides non-repudiation and source identification, preventing disputes about the report’s origin.
 3. *Physical Quantum Seals* — protects the measurement infrastructure, ensuring sensors and devices cannot be tampered with or manipulated.
 
-**Scale & Feasibility:** Foundational theory on quantum signatures have outlined an approach to quantum-enabled authentication[^3].  Identity-based quantum protocols have been demonstrated in the context of a secure QKD communication[^4] and a 280-km signatured has been achieved[^5]. As well, advancements in practical QKD have been shown, like a satellite-to-ground linkage[^6], showcasing practical viability. In addition, schematic quantum seals using entangled photon sources have been proposed[^7].
+**Scale & Feasibility:** Foundational theory on quantum signatures have outlined an approach to quantum-enabled authentication[^3].  Identity-based quantum protocols have been demonstrated in the context of a secure QKD communication[^4] and a 280-km signature has been achieved[^5]. As well, advancements in practical QKD have been shown, like a satellite-to-ground linkage[^6], showcasing practical viability. In addition, schematic quantum seals using entangled photon sources have been proposed[^7].
 
 ## Bibliography
 
