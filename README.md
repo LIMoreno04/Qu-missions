@@ -1,6 +1,6 @@
 # Qu-missions  |  Team 3
 
-![Logo](logoQuantum.svg)
+![Logo](images/logo.svg)
 
 ### Quantum Hackathon Latam 2025: *Quantum for Climate*
 
@@ -9,6 +9,8 @@
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 
 > Ensuring fair-play and transparency in climate impact reporting with quantum communication.
+
+### Overview
 
 **Guiding question:** How do we confirm that climate impact reports are valid, untampered, and secure, both in their physical origin and in their digital transmission?
 
@@ -21,9 +23,18 @@ These instruments depend on the transparency and accuracy of the measurements. W
 1. *Quantum Key Distribution* — secures data in transit, validating unmediated provenance and detecting interception attempts.
 2. *Quantum Digital Signatures* — coupled with QKD, provides non-repudiation and source identification, preventing disputes about the report’s origin.
 
+![Diagram](images/solution-flow.png)
+
 **Need for Quantum:** Conventional digital security methods cannot fully guarantee the integrity and authenticity of climate impact data. Classical encryption can be broken and digital signatures alone cannot prevent sophisticated forgery. *QKD* & *QDS* components provide unforgeable and non-repudiable authentication building an information-theoretically secure framework, making it possible to trust climate impact reports in a superior way to classical methods.
 
 **Scale & Feasibility:** Foundational theory on quantum signatures have outlined an approach to quantum-enabled authentication[^3].  Identity-based quantum protocols have been demonstrated in the context of a secure QKD communication[^4] and a 280-km signature has been achieved[^5]. As well, advancements in practical QKD have been shown, like a satellite-to-ground linkage[^6], showcasing practical viability.
+
+### Contents
+
+In this repository, you can find:
+
+- **mathematical-formalism.pdf** A document where we outline how to integrate QKD & QDS.
+- **front-end-dashboard** A mock visualization dashboard.
 
 ## Bibliography
 
