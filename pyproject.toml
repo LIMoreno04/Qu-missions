@@ -1,0 +1,10 @@
+[project]
+name = "qu-missions"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "qbraid>=0.9.10",
+    "qiskit>=2.2.1",
+]

@@ -29,12 +29,21 @@ These instruments depend on the transparency and accuracy of the measurements. W
 
 **Scale & Feasibility:** Foundational theory on quantum signatures have outlined an approach to quantum-enabled authentication[^3].  Identity-based quantum protocols have been demonstrated in the context of a secure QKD communication[^4] and a 280-km signature has been achieved[^5]. As well, advancements in practical QKD have been shown, like a satellite-to-ground linkage[^6], showcasing practical viability.
 
+
 ### Contents
 
 In this repository, you can find:
 
 - **math-description.pdf** A document where we outline how to integrate QKD & QDS.
-- **front-end-dashboard** A mock visualization dashboard.
+- **front-end-dashboard** A mock visualization dashboard based on React.
+- **classical-sensor.pdf** A classical CO2 measuring device that could be connected (integration was validated).
+- **secure_carbon_reporter.py** The transmission simulation with Qiskit.
+
+
+### Set-up & Installation
+
+Clone git repository and run ```uv sync```
+
 
 ## Bibliography
 
