@@ -19,6 +19,7 @@ import numpy as np
 from qiskit import QuantumCircuit
 import random
 from qiskit_aer import AerSimulator
+import matplotlib.pyplot as plt
 
 class QuantumKeyDistribution:
     def __init__(self, num_qubits=8):
@@ -28,7 +29,7 @@ class QuantumKeyDistribution:
         
         # Initialize quantum simulator for qBraid environment
         self.simulator = AerSimulator()
-        print("🔬 Using quantum simulator in qBraid")
+        print("Using quantum simulator in qBraid")
         
     def enable_eavesdropping(self, active=True, intercept_rate=0.7):
         """Enable/disable eavesdropping simulation
@@ -43,7 +44,7 @@ class QuantumKeyDistribution:
         
     def generate_bb84_key(self, required_bits=64):
         """Generate quantum key using BB84 protocol"""
-        print(f"🔬 Starting BB84 protocol with {self.num_qubits} qubits")
+        print(f"Starting BB84 protocol with {self.num_qubits} qubits")
         
         # Alice generates random bits and bases
         rng = np.random.default_rng()
@@ -53,9 +54,9 @@ class QuantumKeyDistribution:
         # Bob chooses random measurement bases
         bob_bases = np.round(rng.random(self.num_qubits)).astype(int)
         
-        print(f"📤 Alice bits: {alice_bits.tolist()}")
-        print(f"📤 Alice bases: {alice_bases.tolist()} (0=Z, 1=X)")
-        print(f"📥 Bob bases: {bob_bases.tolist()}")
+        print(f"Alice bits: {alice_bits.tolist()}")
+        print(f"Alice bases: {alice_bases.tolist()} (0=Z, 1=X)")
+        print(f"Bob bases: {bob_bases.tolist()}")
         
         # Create quantum circuit
         qc = self.create_bb84_circuit(alice_bits, alice_bases, bob_bases)
@@ -69,7 +70,7 @@ class QuantumKeyDistribution:
         measurement_string = list(counts.keys())[0]
         bob_measurements = [int(bit) for bit in measurement_string[::-1]]
         
-        print(f"📥 Bob measurements: {bob_measurements}")
+        print(f"Bob measurements: {bob_measurements}")
         
         # Sift key based on matching bases
         shared_key = self.sift_key(alice_bits, alice_bases, bob_bases, bob_measurements)
@@ -84,9 +85,9 @@ class QuantumKeyDistribution:
         matching_bases_count = sum(1 for i in range(self.num_qubits) if alice_bases[i] == bob_bases[i])
         self.analyze_qber(qber, matching_bases_count)
         
-        print(f"🔑 Final key length: {len(final_key)} bits")
-        print(f"📊 Fidelity: {fidelity:.3f}")
-        print(f"📊 QBER: {qber:.3f}")
+        print(f"Final key length: {len(final_key)} bits")
+        print(f"Fidelity: {fidelity:.3f}")
+        print(f"QBER: {qber:.3f}")
         
         # Security thresholds for BB84
         if qber <= 0.11:
@@ -98,9 +99,9 @@ class QuantumKeyDistribution:
         else:
             security_status = "Compromised (Unsafe)"
             
-        print(f"🔒 Channel: {security_status}")
+        print(f"Channel: {security_status}")
         if qber > 0.11:
-            print(f"⚠️  QBER above ideal threshold (11%). Consider key refinement.")
+            print(f"WARNING: QBER above ideal threshold (11%). Consider key refinement.")
         
         return final_key, qber <= 0.25
     
@@ -126,8 +127,8 @@ class QuantumKeyDistribution:
         # Simulate eavesdropping (intercept-resend attack)
         if self.eavesdropping:
             intercepted_qubits = int(self.eve_intercept_rate * self.num_qubits)
-            print(f"🕵️ Eve performing intercept-resend attack!")
-            print(f"🕵️ Eve intercepting {intercepted_qubits}/{self.num_qubits} qubits ({self.eve_intercept_rate:.1%})")
+            print(f"Eve performing intercept-resend attack!")
+            print(f"Eve intercepting {intercepted_qubits}/{self.num_qubits} qubits ({self.eve_intercept_rate:.1%})")
             
             for i in range(self.num_qubits):
                 if random.random() < self.eve_intercept_rate:
@@ -157,17 +158,17 @@ class QuantumKeyDistribution:
         shared_key = []
         matches = 0
         
-        print("\n🔄 Sifting key (matching bases only):")
+        print("\nSifting key (matching bases only):")
         for i in range(self.num_qubits):
             if alice_bases[i] == bob_bases[i]:
                 shared_key.append(alice_bits[i])
-                match_symbol = "✅" if alice_bits[i] == bob_measurements[i] else "❌"
+                match_symbol = "MATCH" if alice_bits[i] == bob_measurements[i] else "ERROR"
                 print(f"   Qubit {i}: Alice={alice_bits[i]} Bob={bob_measurements[i]} {match_symbol}")
                 if alice_bits[i] == bob_measurements[i]:
                     matches += 1
         
-        print(f"📊 Matching bases: {len(shared_key)}/{self.num_qubits}")
-        print(f"📊 Correct measurements: {matches}/{len(shared_key) if shared_key else 0}")
+        print(f"Matching bases: {len(shared_key)}/{self.num_qubits}")
+        print(f"Correct measurements: {matches}/{len(shared_key) if shared_key else 0}")
         
         return shared_key
     
@@ -208,30 +209,30 @@ class QuantumKeyDistribution:
     
     def analyze_qber(self, qber, num_matching_bases):
         """Provide detailed QBER analysis"""
-        print(f"\n📈 QBER Analysis:")
-        print(f"   • Error Rate: {qber:.1%}")
-        print(f"   • Sample Size: {num_matching_bases} qubits")
+        print(f"\nQBER Analysis:")
+        print(f"   - Error Rate: {qber:.1%}")
+        print(f"   - Sample Size: {num_matching_bases} qubits")
         
         if qber == 0:
-            print(f"   • Status: Perfect transmission (theoretical limit)")
+            print(f"   - Status: Perfect transmission (theoretical limit)")
         elif qber <= 0.01:
-            print(f"   • Status: Excellent quality channel")
+            print(f"   - Status: Excellent quality channel")
         elif qber <= 0.05:
-            print(f"   • Status: Good quality channel")
+            print(f"   - Status: Good quality channel")
         elif qber <= 0.11:
-            print(f"   • Status: Acceptable for secure communication")
+            print(f"   - Status: Acceptable for secure communication")
         elif qber <= 0.15:
-            print(f"   • Status: Moderate errors - monitor channel")
+            print(f"   - Status: Moderate errors - monitor channel")
         elif qber <= 0.25:
-            print(f"   • Status: High errors - possible eavesdropping")
+            print(f"   - Status: High errors - possible eavesdropping")
         else:
-            print(f"   • Status: Excessive errors - channel compromised")
+            print(f"   - Status: Excessive errors - channel compromised")
             
         # Statistical confidence
         if num_matching_bases < 4:
-            print(f"   ⚠️  Small sample size - QBER estimate may be unreliable")
+            print(f"   WARNING: Small sample size - QBER estimate may be unreliable")
         elif num_matching_bases >= 10:
-            print(f"   ✅ Good sample size for reliable QBER estimation")
+            print(f"   INFO: Good sample size for reliable QBER estimation")
     
     def extend_key(self, key, required_bits):
         """Extend key to required length using quantum-seeded expansion"""
@@ -258,8 +259,8 @@ class QuantumKeyDistribution:
 
 def run_single_experiment(qkd, eve_rate, experiment_num, required_bits=64):
     """Run a single QKD experiment with specified Eve intercept rate"""
-    print(f"\n📊 EXPERIMENT #{experiment_num}")
-    print(f"🕵️ Eve Intercept Rate: {eve_rate:.1%}")
+    print(f"\nEXPERIMENT #{experiment_num}")
+    print(f"Eve Intercept Rate: {eve_rate:.1%}")
     print("-" * 30)
     
     # Configure eavesdropping for this experiment
@@ -301,9 +302,9 @@ def run_single_experiment(qkd, eve_rate, experiment_num, required_bits=64):
 
 def main():
     """Demonstrate quantum key distribution with multiple experiments"""
-    print("🌍 QUANTUM KEY DISTRIBUTION DEMO")
-    print("⚛️ BB84 Protocol Implementation")
-    print("🚀 qBraid Platform")
+    print("QUANTUM KEY DISTRIBUTION DEMO")
+    print("BB84 Protocol Implementation")
+    print("qBraid Platform")
     print("=" * 60)
     
     # Configuration for multiple experiments
@@ -332,10 +333,10 @@ def main():
     qkd = QuantumKeyDistribution(num_qubits=8)
     required_bits = 64
     
-    print(f"🔬 Running {NUM_EXPERIMENTS} experiments with different Eve intercept rates")
-    print(f"⚛️ Protocol: BB84 with {qkd.num_qubits} qubits")
-    print(f"🔑 Target key length: {required_bits} bits")
-    print(f"💻 Execution: qBraid Platform")
+    print(f"Running {NUM_EXPERIMENTS} experiments with different Eve intercept rates")
+    print(f"Protocol: BB84 with {qkd.num_qubits} qubits")
+    print(f"Target key length: {required_bits} bits")
+    print(f"Execution: qBraid Platform")
     print("=" * 60)
     
     # Store results for summary
@@ -349,7 +350,7 @@ def main():
     
     # Print summary
     print("\n" + "=" * 60)
-    print("� EXPERIMENTAL RESULTS SUMMARY")
+    print("EXPERIMENTAL RESULTS SUMMARY")
     print("=" * 60)
     print(f"{'Exp':<4} {'Eve Rate':<10} {'QBER':<8} {'Fidelity':<10}{'Status':<15}")
     print("-" * 60)
@@ -367,6 +368,108 @@ def main():
         
         print(f"{result['experiment']:<4} {eve_rate_str:<10} {qber_str:<8} {fidelity_str:<10}  {status:<15}")
     
+    # Create visualization
+    create_qber_plot(results)
+
+
+def create_qber_plot(results):
+    """Create a plot showing Eve intercept rate vs QBER"""
+    try:
+        # Extract data for plotting
+        eve_rates = [result['eve_rate'] * 100 for result in results]  # Convert to percentage
+        qbers = [result['qber'] * 100 for result in results]  # Convert to percentage
+        
+        # Create the plot
+        plt.figure(figsize=(12, 8))
+        plt.plot(eve_rates, qbers, 'bo-', linewidth=3, markersize=10, label='QBER vs Eve Rate', alpha=0.8)
+        
+        # Add security threshold lines
+        plt.axhline(y=11, color='orange', linestyle='--', linewidth=2, alpha=0.8, label='Security Threshold (11%)')
+        plt.axhline(y=25, color='red', linestyle='--', linewidth=2, alpha=0.8, label='Maximum Acceptable (25%)')
+        
+        # Add background color regions
+        plt.axhspan(0, 11, alpha=0.15, color='green')
+        plt.axhspan(11, 25, alpha=0.15, color='orange')
+        if max(qbers) > 25:
+            plt.axhspan(25, max(qbers) * 1.1, alpha=0.15, color='red')
+        
+        # Customize the plot
+        plt.xlabel('Eve Intercept Rate (%)', fontsize=14, fontweight='bold')
+        plt.ylabel('QBER (%)', fontsize=14, fontweight='bold')
+        plt.title('Quantum Bit Error Rate vs Eavesdropping Rate\n(BB84 Protocol - qBraid Implementation)', 
+                 fontsize=16, fontweight='bold', pad=20)
+        plt.grid(True, alpha=0.4, linestyle=':')
+        plt.legend(fontsize=12, loc='upper left')
+        
+        # Add data point labels
+        for i, (eve_rate, qber) in enumerate(zip(eve_rates, qbers)):
+            plt.annotate(f'{qber:.1f}%', (eve_rate, qber), 
+                        xytext=(5, 5), textcoords='offset points',
+                        fontsize=10, alpha=0.8)
+        
+        # Add annotations for key points
+        if 0 in eve_rates:
+            idx = eve_rates.index(0)
+            plt.annotate('No Eavesdropping\n(Ideal)', (0, qbers[idx]), 
+                        xytext=(15, qbers[idx] + 3), fontsize=11, fontweight='bold',
+                        arrowprops=dict(arrowstyle='->', alpha=0.7, color='green'))
+        
+        if 100 in eve_rates:
+            idx = eve_rates.index(100)
+            plt.annotate('Maximum\nEavesdropping', (100, qbers[idx]), 
+                        xytext=(85, qbers[idx] + 3), fontsize=11, fontweight='bold',
+                        arrowprops=dict(arrowstyle='->', alpha=0.7, color='red'))
+        
+        # Set axis limits with padding
+        plt.xlim(-5, 105)
+        plt.ylim(0, max(qbers) * 1.15)
+        
+        # Add region labels
+        plt.text(50, 5, 'SECURE\nREGION', ha='center', va='center', 
+                fontsize=12, fontweight='bold', alpha=0.6, color='green')
+        if max(qbers) > 11:
+            plt.text(50, 18, 'CAUTION\nREGION', ha='center', va='center', 
+                    fontsize=12, fontweight='bold', alpha=0.6, color='orange')
+        if max(qbers) > 25:
+            plt.text(50, (25 + max(qbers))/2, 'COMPROMISED\nREGION', ha='center', va='center', 
+                    fontsize=12, fontweight='bold', alpha=0.6, color='red')
+        
+        plt.tight_layout()
+        
+        # Save the plot
+        filename = 'qber_vs_eve_rate.png'
+        plt.savefig(filename, dpi=300, bbox_inches='tight')
+        print(f"\nGraph saved as: {filename}")
+        
+        # Display statistics
+        print(f"\nPLOT STATISTICS:")
+        print(f"Minimum QBER: {min(qbers):.1f}% (at {eve_rates[qbers.index(min(qbers))]:.0f}% Eve rate)")
+        print(f"Maximum QBER: {max(qbers):.1f}% (at {eve_rates[qbers.index(max(qbers))]:.0f}% Eve rate)")
+        
+        # Calculate correlation
+        if len(eve_rates) > 1:
+            correlation = np.corrcoef(eve_rates, qbers)[0, 1]
+            print(f"Correlation coefficient: {correlation:.3f}")
+            
+            # Determine security assessment
+            secure_points = sum(1 for q in qbers if q <= 11)
+            caution_points = sum(1 for q in qbers if 11 < q <= 25)
+            compromised_points = sum(1 for q in qbers if q > 25)
+            
+            print(f"Security assessment:")
+            print(f"  - Secure points: {secure_points}/{len(results)}")
+            print(f"  - Caution points: {caution_points}/{len(results)}")
+            print(f"  - Compromised points: {compromised_points}/{len(results)}")
+        
+        plt.show()
+        
+        return plt
+        
+    except Exception as e:
+        print(f"Error creating plot: {e}")
+        print("Continuing without visualization...")
+        return None
+
 
 if __name__ == "__main__":
     main()
