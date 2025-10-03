@@ -32,12 +32,11 @@ These instruments depend on the transparency and accuracy of the measurements. W
 
 ### Contents
 
-In this repository, you can find:
+As part of the hackathon deliverables, we present:
 
-- **math-description.pdf** A document where we outline how to integrate QKD & QDS.
+- **theory.pdf** A document where we outline how to integrate QKD & QDS.
 - **front-end-dashboard** A mock visualization dashboard based on React.
-- **classical-sensor.pdf** A classical CO2 measuring device that could be connected (integration was validated).
-- **secure_carbon_reporter.py** The transmission simulation with Qiskit.
+- **devices/** A folder with selected product specification sheets applicable to our use case.
 
 
 ### Set-up & Installation
