@@ -18,8 +18,7 @@ Usage in qBraid:
 import numpy as np
 from qiskit import QuantumCircuit
 import random
-import qbraid
-from qbraid import get_device
+from qiskit_aer import AerSimulator
 
 class QuantumKeyDistribution:
     def __init__(self, num_qubits=8):
@@ -27,9 +26,9 @@ class QuantumKeyDistribution:
         self.eavesdropping = False
         self.eve_intercept_rate = 0.7  # Default: Eve intercepts 70% of qubits
         
-        # Initialize qBraid quantum simulator
-        self.device = get_device("qbraid_qir_simulator")
-        print("🔬 Using qBraid quantum simulator")
+        # Initialize quantum simulator for qBraid environment
+        self.simulator = AerSimulator()
+        print("🔬 Using quantum simulator in qBraid")
         
     def enable_eavesdropping(self, active=True, intercept_rate=0.7):
         """Enable/disable eavesdropping simulation
@@ -61,10 +60,10 @@ class QuantumKeyDistribution:
         # Create quantum circuit
         qc = self.create_bb84_circuit(alice_bits, alice_bases, bob_bases)
         
-        # Execute circuit on qBraid
-        job = self.device.run(qc, shots=1)
+        # Execute circuit
+        job = self.simulator.run(qc, shots=1)
         result = job.result()
-        counts = result.get_counts()
+        counts = result.get_counts(qc)
         
         # Extract Bob's measurements
         measurement_string = list(counts.keys())[0]
@@ -281,10 +280,10 @@ def run_single_experiment(qkd, eve_rate, experiment_num, required_bits=64):
     
     qc = qkd.create_bb84_circuit(alice_bits, alice_bases, bob_bases)
     
-    # Execute circuit on qBraid
-    job = qkd.device.run(qc, shots=1)
+    # Execute circuit
+    job = qkd.simulator.run(qc, shots=1)
     result = job.result()
-    counts = result.get_counts()
+    counts = result.get_counts(qc)
     
     measurement_string = list(counts.keys())[0]
     bob_measurements = [int(bit) for bit in measurement_string[::-1]]
