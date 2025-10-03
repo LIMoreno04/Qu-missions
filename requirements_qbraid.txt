@@ -1,13 +1,20 @@
 # Requisitos para Plataforma de Seguridad Cuántica con qBraid
+# Requirements for QKD.ipynb notebook
 
 # Core quantum computing
 qbraid>=0.4.0
 qiskit>=0.45.0
 qiskit-aer>=0.12.0
 
-# Cryptography
-cryptography>=41.0.0
+# Jupyter notebook support
+ipkernel>=6.15.2
+jupyter>=1.0.0
 
 # Data processing and visualization
 numpy>=1.24.0
 matplotlib>=3.7.0
+
+# Cryptography (for quantum cryptography protocols)
+cryptography>=41.0.0
+
+# Note: 'random' module is built-in Python, no installation needed
