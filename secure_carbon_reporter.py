@@ -1,20 +1,57 @@
 """
 Quantum Key Distribution (QKD) using BB84 Protocol
 Clean implementation for quantum carbon security
+Optimized for qBraid platform
+
+qBraid Integration Features:
+- Automatic detection of qBraid environment
+- Fallback to local AER simulator if qBraid unavailable  
+- Support for qBraid quantum simulator devices
+- Enhanced error handling for cloud execution
+- Platform-specific configuration and device management
+
+Usage in qBraid:
+1. Ensure qbraid package is installed: pip install qbraid>=0.4.0
+2. Run the script - it will automatically detect and use qBraid services
+3. If qBraid is unavailable, it gracefully falls back to local simulation
 """
 
 import numpy as np
 from qiskit import QuantumCircuit
-from qiskit_aer import AerSimulator
 import random
 
+# qBraid imports with fallback
+try:
+    import qbraid
+    from qbraid import get_device
+    QBRAID_AVAILABLE = True
+except ImportError:
+    print("⚠️  qBraid not available, falling back to local simulation")
+    from qiskit_aer import AerSimulator
+    QBRAID_AVAILABLE = False
+
 class QuantumKeyDistribution:
-    def __init__(self, num_qubits=8):
+    def __init__(self, num_qubits=8, use_qbraid=True):
        
         self.num_qubits = num_qubits
-        self.simulator = AerSimulator()
+        self.use_qbraid = use_qbraid and QBRAID_AVAILABLE
         self.eavesdropping = False
         self.eve_intercept_rate = 0.7  # Default: Eve intercepts 70% of qubits
+        
+        # Initialize simulator based on availability
+        if self.use_qbraid and QBRAID_AVAILABLE:
+            try:
+                # Try to get qBraid quantum simulator
+                self.device = get_device("qbraid_qir_simulator")
+                print("🔬 Using qBraid quantum simulator")
+            except Exception as e:
+                print(f"⚠️  qBraid device not available: {e}")
+                print("📡 Falling back to local AER simulator")
+                self.simulator = AerSimulator()
+                self.use_qbraid = False
+        else:
+            self.simulator = AerSimulator()
+            print("🔬 Using local AER simulator")
         
     def enable_eavesdropping(self, active=True, intercept_rate=0.7):
         """Enable/disable eavesdropping simulation
@@ -47,9 +84,22 @@ class QuantumKeyDistribution:
         qc = self.create_bb84_circuit(alice_bits, alice_bases, bob_bases)
         
         # Execute circuit
-        job = self.simulator.run(qc, shots=1)
-        result = job.result()
-        counts = result.get_counts(qc)
+        if self.use_qbraid and QBRAID_AVAILABLE:
+            try:
+                # Submit to qBraid device
+                job = self.device.run(qc, shots=1)
+                result = job.result()
+                counts = result.get_counts()
+            except Exception as e:
+                print(f"⚠️  qBraid execution failed: {e}")
+                print("📡 Falling back to local simulation")
+                job = self.simulator.run(qc, shots=1)
+                result = job.result()
+                counts = result.get_counts(qc)
+        else:
+            job = self.simulator.run(qc, shots=1)
+            result = job.result()
+            counts = result.get_counts(qc)
         
         # Extract Bob's measurements
         measurement_string = list(counts.keys())[0]
@@ -242,6 +292,35 @@ class QuantumKeyDistribution:
         return final_key[:required_bits]
 
 
+def configure_qbraid_environment():
+    """Configure qBraid environment and check device availability"""
+    if not QBRAID_AVAILABLE:
+        print("❌ qBraid not available in this environment")
+        return False
+    
+    try:
+        # Check qBraid configuration
+        print("🔧 Configuring qBraid environment...")
+        
+        # List available devices
+        try:
+            available_devices = qbraid.get_devices()
+            print(f"📡 Available qBraid devices: {len(available_devices)}")
+            for device in available_devices[:3]:  # Show first 3
+                print(f"   • {device}")
+        except Exception as e:
+            print(f"⚠️  Could not list devices: {e}")
+        
+        # Test quantum simulator access
+        test_device = get_device("qbraid_qir_simulator")
+        print("✅ qBraid quantum simulator access verified")
+        return True
+        
+    except Exception as e:
+        print(f"❌ qBraid configuration failed: {e}")
+        return False
+
+
 def run_single_experiment(qkd, eve_rate, experiment_num, required_bits=64):
     """Run a single QKD experiment with specified Eve intercept rate"""
     print(f"\n📊 EXPERIMENT #{experiment_num}")
@@ -265,9 +344,23 @@ def run_single_experiment(qkd, eve_rate, experiment_num, required_bits=64):
     bob_bases = np.round(rng.random(qkd.num_qubits)).astype(int)
     
     qc = qkd.create_bb84_circuit(alice_bits, alice_bases, bob_bases)
-    job = qkd.simulator.run(qc, shots=1)
-    result = job.result()
-    counts = result.get_counts(qc)
+    
+    # Execute circuit with proper error handling for qBraid
+    if qkd.use_qbraid and QBRAID_AVAILABLE:
+        try:
+            job = qkd.device.run(qc, shots=1)
+            result = job.result()
+            counts = result.get_counts()
+        except Exception as e:
+            print(f"⚠️  qBraid execution failed: {e}")
+            job = qkd.simulator.run(qc, shots=1)
+            result = job.result()
+            counts = result.get_counts(qc)
+    else:
+        job = qkd.simulator.run(qc, shots=1)
+        result = job.result()
+        counts = result.get_counts(qc)
+        
     measurement_string = list(counts.keys())[0]
     bob_measurements = [int(bit) for bit in measurement_string[::-1]]
     
@@ -286,6 +379,11 @@ def main():
     """Demonstrate quantum key distribution with multiple experiments"""
     print("🌍 QUANTUM KEY DISTRIBUTION DEMO")
     print("⚛️ BB84 Protocol Implementation")
+    print("🚀 qBraid Platform Integration")
+    print("=" * 60)
+    
+    # Configure qBraid environment
+    qbraid_ready = configure_qbraid_environment()
     print("=" * 60)
     
     # Configuration for multiple experiments
@@ -310,13 +408,15 @@ def main():
         step = 1.0 / (NUM_EXPERIMENTS - 1)
         EVE_INTERCEPT_RATES = [i * step for i in range(NUM_EXPERIMENTS)]
     
-    # Initialize QKD
-    qkd = QuantumKeyDistribution(num_qubits=8)
+    # Initialize QKD with qBraid if available
+    qkd = QuantumKeyDistribution(num_qubits=8, use_qbraid=qbraid_ready)
     required_bits = 64
     
     print(f"🔬 Running {NUM_EXPERIMENTS} experiments with different Eve intercept rates")
     print(f"⚛️ Protocol: BB84 with {qkd.num_qubits} qubits")
     print(f"🔑 Target key length: {required_bits} bits")
+    platform_info = "qBraid Platform" if qkd.use_qbraid else "Local AER Simulator"
+    print(f"💻 Execution: {platform_info}")
     print("=" * 60)
     
     # Store results for summary
