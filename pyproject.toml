@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "cryptography>=46.0.2",
+    "numpy>=2.3.3",
     "qbraid>=0.9.10",
     "qiskit>=2.2.1",
+    "qiskit-aer>=0.17.2",
 ]
