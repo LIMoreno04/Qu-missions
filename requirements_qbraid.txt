@@ -1,4 +1,3 @@
-# Requisitos para Plataforma de Seguridad Cuántica con qBraid
 # Requirements for QKD.ipynb notebook
 
 # Core quantum computing
