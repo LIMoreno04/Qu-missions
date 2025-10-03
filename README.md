@@ -41,8 +41,8 @@ As part of the hackathon deliverables, we present:
 
 ### Set-up & Installation
 
-Clone git repository and run ```uv sync```
-
+Clone git repository and run ```uv sync``` \
+To run the front-end-dashboard, follow the instructions in ```front-end-dashboard/README.md```
 
 ## Bibliography
 
