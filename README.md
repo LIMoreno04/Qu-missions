@@ -35,7 +35,7 @@ These instruments depend on the transparency and accuracy of the measurements. W
 As part of the hackathon deliverables, we present:
 
 - **theory.pdf** A document where we outline how to integrate QKD & QDS.
-- **front-end-dashboard** A mock visualization dashboard based on React.
+- **front-end-dashboard/** A mock visualization dashboard app based on React.
 - **devices/** A folder with selected product specification sheets applicable to our use case.
 
 
